@@ -1,4 +1,7 @@
-.App {
-  text-align: center;
+.banner {
+    display: flex;
+    height: 40px;
+    background-color: darkblue;
+    color: white;
+    align-items: center;
 }
-
