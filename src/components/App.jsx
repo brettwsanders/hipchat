@@ -5,7 +5,7 @@ import Form from './Form.jsx';
 import Output from './Output.jsx';
 import * as extract from '../helpers/extractors.js'
 
-const $ = el => document.querySelector(el);
+const $ = selector => document.querySelector(selector);
 
 class App extends Component {
     constructor(props) {
@@ -18,21 +18,35 @@ class App extends Component {
                 links: []
             }
         }
+        this._addLinkToState = this._addLinkToState.bind(this);
+    }
+
+    _addLinkToState(linkObject) {
+        this.setState({
+            data: {
+                ...this.state.data,
+                links: [
+                    ...this.state.data.links,
+                    linkObject
+                ]
+            }
+        })
     }
 
     _handleMessage(m) {
         const mentions = extract.mentions(m);
         const emoticons = extract.emoticons(m);
-        const links = extract.links(m);
 
-        this.setState(() => ({
+        this.setState({
             message: m,
             data: {
                 mentions,
                 emoticons,
-                links
+                links: []
             }
-        }));
+        });
+
+        extract.links(m, this._addLinkToState);
     }
 
     onSubmit(e) {
